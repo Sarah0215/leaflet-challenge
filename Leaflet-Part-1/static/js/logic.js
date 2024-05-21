@@ -44,50 +44,51 @@ function createFeatures(earthquakeData) {
         }
     });
 
-// Add GeoJSON to map.
-geoJsonLayer.addTo(myMap);
+    // Add GeoJSON to map.
+    geoJsonLayer.addTo(myMap);
 
-     //Add legend
- var legend =L.control({position:'bottomright'});
 
- legend.onAdd = function(mymap){
+//Add legend
+let legend =L.control({position:'bottomright'});
 
-     var dl =L.DomUtil.create('dl','legend_info'),
-     grades = [-10,10,30,50,70,90];
+legend.onAdd = function(map){
+    let div =L.DomUtil.create('div','info legend');
+    let depths = [-10,10,30,50,70,90];
+    let labels = [];
 
- //Loop through our intervals and generate a label with a colored square for each
- for (var i=0; i<grades.length;i++){
-     dl.innerHTML +=
-         '<i style="background:'+ getColor(grades[i]+1)+'"></i> '+
-         grades[i] + (grades[i+1]? '&ndash;'+grades[i+1]+'<br>':'+');
-     }
-     
-     //background color of legend
-     dl.style.backgroundColor = 'white';
+////Adding background color of legend, boarder and padding to legend
 
-     //color sample
-     dl.innerHTML += '<div class="color-sample"></div>'; 
+    div.style.backgroundColor = 'white';
+    div.style.border = '1px solid black';
+    div.style.padding = '10px';
 
-     return dl;
- };
+//Loop through our intervals and generate a label with a colored square for each
+    for (let i=0; i<depths.length;i++){
+        div.innerHTML +=
+            '<div style="display: flex; align-items: center;">' +
+            '<i style="background:'+ getColor(depths[i])+'; width: 18px; height: 18px; display: inline-block; margin-right: 5px;"></i> ' +
+            '<span>'+depths[i] + (depths[i + 1] ? '&ndash;' + depths[i + 1]:'+')+'</span>'+'</div>';
+    }
+    
+    return div;
 
- legend.addTo(myMap);
+};
 
- }
+legend.addTo(myMap);
 
-// function that return of color
+}
 
 function getColor(depth) {
     if (depth >= 90) {
         return "red";
     } else if (depth >= 70) {
-        return "lightred";
+        return "tomato";
     } else if (depth >= 50) {
         return "orange";
     } else if (depth >= 30) {
         return "yellow";
     } else if (depth >= 10) {
-        return "lime";
+        return "darkseagreen";
     } else {
         return "green";
     }
